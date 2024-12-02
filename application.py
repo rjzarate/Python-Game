@@ -38,7 +38,7 @@ class Application(Frame):
         #self.button2.place(relx=0.8,rely=0.5, relwidth=0.3, relheight=0.3, anchor=CENTER)
 
         # Entry
-        self.entry = Entry(font=("Courier New", 15))
+        self.entry = Entry(font=("Courier New", 15), show="*")
         self.entry.place(relx=0.5, rely=0.87, relwidth=0.9, relheight=0.1, anchor=CENTER)
         self.is_entry_focus = True
         self.entry.bind('<FocusIn>', lambda _ : globals().__setitem__('is_entry_focus', True))
@@ -101,6 +101,10 @@ class Application(Frame):
     def set_success_rate_label_color(self, color):
         self.success_rate_label.configure(fg=color)
 
+    def hide_entry(self):
+        self.entry.configure(show='*')
+    def show_entry(self):
+        self.entry.configure(show='')
     def get_entry(self):
         return self.entry.get()
 

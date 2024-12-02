@@ -63,6 +63,7 @@ class Director():
             case State.GET_KEY:
                 # Generate ai
                 if (self.create_ai(text)):
+                    self.application.show_entry()
                     # Switch states and create creature
                     self.generate_creature()
                     self.state = State.CREATURE
