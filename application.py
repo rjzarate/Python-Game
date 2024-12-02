@@ -1,6 +1,10 @@
 from tkinter import *
 import state as State
 import director
+import base64
+import os
+from io import BytesIO
+from PIL import Image, ImageTk 
 
 class Application(Frame):
 
@@ -14,6 +18,25 @@ class Application(Frame):
 
         self.data = {"A": range(7, 27)}
 
+        # Relative path to the image in the repository
+        image_path = "background.jpeg"
+        if os.path.exists(image_path):
+            # Load and encode the image to Base64
+            with open(image_path, "rb") as image_file:
+                encoded_image = base64.b64encode(image_file.read()).decode("utf-8")
+            
+            # Decode from Base64 and display using Tkinter
+            encoded_image_bytes = base64.b64decode(encoded_image)
+            image = Image.open(BytesIO(encoded_image_bytes))
+            image = image.resize((800, 500), Image.Resampling.LANCZOS)
+            self.bg_photo = ImageTk.PhotoImage(image)
+            
+            self.bg_label = Label(self, image=self.bg_photo)
+            self.bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+        else:
+            print(f"Error: Image file not found at {image_path}.")
+            self.bg_photo = None
+        
         # Main Text
         self.main_label = Label(text="Insert Google Gemini API Key", fg="White", font=("Helvetica", 18))
         self.main_label.place(relx=0.5, rely=0.3, anchor=CENTER)
