@@ -8,7 +8,7 @@ class Application(Frame):
         # Create main window
         self.root = Tk()
         self.root.wm_title("AI Battles")
-        self.root.geometry("500x500")
+        self.root.geometry("800x500")
         Frame.__init__(self, self.root)
         self.pack(fill="both", expand=True)
 
@@ -16,15 +16,26 @@ class Application(Frame):
 
         # Main Text
         self.main_label = Label(text="Insert Google Gemini API Key", fg="White", font=("Helvetica", 18))
-        self.main_label.place(relx=0.5,rely=0.2, anchor=CENTER)
+        self.main_label.place(relx=0.5, rely=0.3, anchor=CENTER)
 
         # Word Count Text
         self.word_count_label = Label(text="Words: NA", fg="White", font=("Helvetica", 15), justify=LEFT)
-        self.word_count_label.place(relx=0.2,rely=0.97, anchor=CENTER)
+        self.word_count_label.place(relx=0.2, rely=0.97, anchor=CENTER)
 
         # Character Count Text
         self.character_count_label = Label(text="Characters: NA", fg="White", font=("Helvetica", 15), justify=LEFT)
-        self.character_count_label.place(relx=0.7,rely=0.97, anchor=CENTER)
+        self.character_count_label.place(relx=0.7, rely=0.97, anchor=CENTER)
+
+        # Success Rate Text
+        self.success_rate_label = Label(text="Success Rate: %", fg="White", font='Helvetica 15 italic', justify="left")
+        self.success_rate_label.place(relx=0.5, rely=0.8, anchor=CENTER)
+
+        # Left button
+        self.button1 = Button(text="left")
+        #self.button1.place(relx=0.2,rely=0.5, relwidth=0.3, relheight=0.3, anchor=CENTER)
+        # Right button
+        self.button2 = Button(text="right")
+        #self.button2.place(relx=0.8,rely=0.5, relwidth=0.3, relheight=0.3, anchor=CENTER)
 
         # Entry
         self.entry = Entry(font=("Courier New", 15))
@@ -65,7 +76,7 @@ class Application(Frame):
     
     def on_key_pressed(self, _):
         if (self.is_entry_focus):
-            self.director.update(self.entry.get())
+            self.director.on_key_pressed(self.entry.get())
 
     def on_configure(self, _):
         # Wrap main label based on width of application
@@ -81,14 +92,24 @@ class Application(Frame):
         self.word_count_label.configure(fg=color)
 
     def set_character_count_label(self, text):
-        self.character_count_label.configure(text=text) 
+        self.character_count_label.configure(text=text)
     def set_character_count_label_color(self, color):
         self.character_count_label.configure(fg=color)
+
+    def set_success_rate_label(self, text):
+        self.success_rate_label.configure(text=text)
+    def set_success_rate_label_color(self, color):
+        self.success_rate_label.configure(fg=color)
+
+    def get_entry(self):
+        return self.entry.get()
 
     def clear_entry(self):
         self.entry.delete(0, 'end')
         
     def update(self):
+        # Call director update
+        self.director.update()
 
-        # Recursive call (1000ms)
-        self.after(1000, self.update)
+        # Recursive call (20ms (50fps))
+        self.after(20, self.update)
